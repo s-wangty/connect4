@@ -17,7 +17,7 @@ public class ArnovTyler_NoodileBot
         }
         else if (g.getWinningPlayer() == (3 - myPlayer))
         {
-            // They won
+            // They won.
             return new int[] { -1000 * (remainingDepth + 1), -1 };
         }
         else if (g.getWinningPlayer() == -1)
