@@ -1,24 +1,29 @@
 package contestants;
 
 import connectFour.Grid;
+import connectFour.Player;
 
-public class ArnovTyler_NoodileBot
+public class ArnavTyler_NoodileBot implements Player
 {
-	
 	 // Returns an array of two integers: [0] is the score for this grid, and
     // [1] is the recommended column to move in for this grid. 
+	public ArnavTyler_NoodileBot(){
+		
+		
+		
+	}
     private int[] minimaxGetScore(Grid g, int remainingDepth, int myPlayer)
     {
         // Did this move end the game?  If so, score it now based on whether we won.
         if (g.getWinningPlayer() == myPlayer)
         {
             // We won!
-            return new int[] { 1000 * (remainingDepth + 1), -1 };
+            return new int[] { Integer.MAX_VALUE * (remainingDepth + 1), -1 };
         }
         else if (g.getWinningPlayer() == (3 - myPlayer))
         {
             // They won.
-            return new int[] { -1000 * (remainingDepth + 1), -1 };
+            return new int[] { Integer.MIN_VALUE * (remainingDepth + 1), -1 };
         }
         else if (g.getWinningPlayer() == -1)
         {
@@ -101,6 +106,16 @@ public class ArnovTyler_NoodileBot
 	{
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	@Override
+	public int getMoveColumn(Grid g) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public String getPlayerName() {
+		
+		return "NoodileBot";
 	}
 
 }
