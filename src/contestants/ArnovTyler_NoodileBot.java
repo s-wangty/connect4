@@ -1,24 +1,28 @@
 package contestants;
 
 import connectFour.Grid;
+import connectFour.GridUtilities;
 
 public class ArnovTyler_NoodileBot
 {
-	
+	private int myPlayerNumber = -1;
+	private int myMoveCount = 0;
 	 // Returns an array of two integers: [0] is the score for this grid, and
     // [1] is the recommended column to move in for this grid. 
+	
+	
     private int[] minimaxGetScore(Grid g, int remainingDepth, int myPlayer)
     {
         // Did this move end the game?  If so, score it now based on whether we won.
         if (g.getWinningPlayer() == myPlayer)
         {
             // We won!
-            return new int[] { 1000 * (remainingDepth + 1), -1 };
+            return new int[] { Integer.MAX_VALUE * (remainingDepth + 1), -1 };
         }
         else if (g.getWinningPlayer() == (3 - myPlayer))
         {
             // They won.
-            return new int[] { -1000 * (remainingDepth + 1), -1 };
+            return new int[] { Integer.MIN_VALUE * (remainingDepth + 1), -1 };
         }
         else if (g.getWinningPlayer() == -1)
         {
@@ -100,7 +104,15 @@ public class ArnovTyler_NoodileBot
 	private int getHeuristicScore(Grid g)
 	{
 		// TODO Auto-generated method stub
-		return 0;
+		double total = 0;
+		
+		GridUtilities util = new GridUtilities(g);
+		
+		int[] directions = {Grid.UP, Grid.RIGHT, Grid.UPRIGHT, Grid.UPLEFT};
+		
+		int player = g.getNextPlayer();
+		
+		if (player == MYPLAYER)
 	}
 
 }
