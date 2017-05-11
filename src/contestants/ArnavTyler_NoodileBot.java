@@ -2,28 +2,31 @@ package contestants;
 
 import connectFour.Grid;
 import connectFour.Player;
+import connectFour.GridUtilities;
 
 public class ArnavTyler_NoodileBot implements Player
 {
-	 // Returns an array of two integers: [0] is the score for this grid, and
-    // [1] is the recommended column to move in for this grid. 
+	private int myPlayer;
+	
 	public ArnavTyler_NoodileBot(){
 		
-		
+		myPlayer = -1;
 		
 	}
+	// Returns an array of two integers: [0] is the score for this grid, and
+    // [1] is the recommended column to move in for this grid.
     private int[] minimaxGetScore(Grid g, int remainingDepth, int myPlayer)
     {
         // Did this move end the game?  If so, score it now based on whether we won.
         if (g.getWinningPlayer() == myPlayer)
         {
             // We won!
-            return new int[] { Integer.MAX_VALUE * (remainingDepth + 1), -1 };
+            return new int[] { 1000 * (remainingDepth + 1), -1 };
         }
         else if (g.getWinningPlayer() == (3 - myPlayer))
         {
             // They won.
-            return new int[] { Integer.MIN_VALUE * (remainingDepth + 1), -1 };
+            return new int[] { -1000 * (remainingDepth + 1), -1 };
         }
         else if (g.getWinningPlayer() == -1)
         {
@@ -104,13 +107,101 @@ public class ArnavTyler_NoodileBot implements Player
 
 	private int getHeuristicScore(Grid g)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		int total = 0;
+		GridUtilities gu = new GridUtilities(g);
+		int[] move = {Grid.UPLEFT,Grid.UP,Grid.UPRIGHT,Grid.UPRIGHT};
+		int current = -1;
+		for(int r = 0; r < g.getRows(); r++){
+			
+			for(int c = 0; c < g.getCols(); c++){
+				
+				current = g.getPlayerAt(r, c);
+				
+				for(int direction : move) {
+					int[] lands = gu.getLengthAndSpaces(r, c, direction);
+//					for(int i = 0; i < lands.length; i++){
+//						
+//						System.out.println(lands[i]);
+//						
+//					}
+					//System.out.println(current + ", " + myPlayer);
+					if (current == myPlayer) {
+						if (lands[0] >= 4) {
+							total += Integer.MAX_VALUE;
+						}
+						else if (lands[0] == 3) {
+							if (lands[1] == 2) {
+								total += 32;
+							}
+							else if(lands[1] == 1) {
+								total += 16;
+							}							
+						}
+						else if (lands[0] == 2) {
+							if (lands[1] == 2) {
+								total += 8;
+							}
+							else if (lands[1] == 1) {
+								total += 4;
+							}
+						}
+						else if (lands[0] == 1) {
+							if (lands[1] == 2) {
+								total += 2;
+							}
+							else if (lands[1] == 1) {
+								total += 1;
+							}
+						}
+//						System.out.println("pos" + total);
+					} else if (current != 0){
+						if (lands[0] >= 4) {
+							total -= Integer.MAX_VALUE;
+						}
+						else if (lands[0] == 3) {
+							if (lands[1] == 2) {
+								total -= 32;
+							}
+							else if(lands[1] == 1) {
+								total -= 16;
+							}							
+						}
+						else if (lands[0] == 2) {
+							if (lands[1] == 2) {
+								total -= 8;
+							}
+							else if (lands[1] == 1) {
+								total -= 4;
+							}
+						}
+						else if (lands[0] == 1) {
+							if (lands[1] == 2) {
+								total -= 2;
+							}
+							else if (lands[1] == 1) {
+								total -= 1;
+							}
+						}
+//						System.out.println("neg" + total);
+					}
+				}				
+			}
+			
+		}
+		//System.out.println(total);
+		return total;
 	}
 	@Override
 	public int getMoveColumn(Grid g) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		if(myPlayer == -1){
+			
+			myPlayer = g.getNextPlayer();
+			return g.getCols() / 2;
+			
+		}
+		int[] ret = minimaxGetScore(g, 5, myPlayer);
+		return ret[1];
 	}
 	@Override
 	public String getPlayerName() {
