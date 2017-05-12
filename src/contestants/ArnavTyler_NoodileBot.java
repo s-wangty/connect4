@@ -13,98 +13,135 @@ public class ArnavTyler_NoodileBot implements Player
 		myPlayer = -1;
 		
 	}
-	// Returns an array of two integers: [0] is the score for this grid, and
-    // [1] is the recommended column to move in for this grid.
-    private int[] minimaxGetScore(Grid g, int remainingDepth, int myPlayer)
-    {
-        // Did this move end the game?  If so, score it now based on whether we won.
-        if (g.getWinningPlayer() == myPlayer)
-        {
-            // We won!
-            return new int[] { 1000 * (remainingDepth + 1), -1 };
-        }
-        else if (g.getWinningPlayer() == (3 - myPlayer))
-        {
-            // They won.
-            return new int[] { -1000 * (remainingDepth + 1), -1 };
-        }
-        else if (g.getWinningPlayer() == -1)
-        {
-            // Game ends in a draw.
-            return new int[] { 0, -1 };
-        }
+	
+	private int[] alphaBeta (Grid g, int depth, int alpha, int beta) {
+		// Did this move end the game?  If so, score it now based on whether we won.
+      if (g.getWinningPlayer() == myPlayer)
+      {
+          // We won!
+          return new int[] { 1000 * (depth + 1), -1 };
+      }
+      else if (g.getWinningPlayer() == (3 - myPlayer))
+      {
+          // They won.
+          return new int[] { -1000 * (depth + 1), -1 };
+      }
+      else if (g.getWinningPlayer() == -1)
+      {
+          // Game ends in a draw.
+          return new int[] { 0, -1 };
+      }
 
-        int nextPlayer = g.getNextPlayer();
+      int nextPlayer = g.getNextPlayer();
 
-        // We don't want to go any deeper, so just return the immediate heuristic score
-        // for this board
-        if (remainingDepth <= 0)
-        {
-            // TODO: FOR YOU TO DO!  WRITE THIS getHeuristicScore METHOD
-            // TO EXAMINE THE GRID AND COME UP WITH A NUMERIC SCORE FOR IT.
-            // THE SCORE SHOULD BE FROM THE POINT OF VIEW OF YOUR PLAYER
-            // (HIGH VALUES MEANS GOOD FOR YOU, LOW VALUES MEAN BAD FOR YOU).
-            // THEN REPLACE '= 1' WITH '= getHeuristicScore(g)'
-            int score = getHeuristicScore(g);
+      // We don't want to go any deeper, so just return the immediate heuristic score
+      // for this board
+      if (depth <= 0)
+      {
+          // TODO: FOR YOU TO DO!  WRITE THIS getHeuristicScore METHOD
+          // TO EXAMINE THE GRID AND COME UP WITH A NUMERIC SCORE FOR IT.
+          // THE SCORE SHOULD BE FROM THE POINT OF VIEW OF YOUR PLAYER
+          // (HIGH VALUES MEANS GOOD FOR YOU, LOW VALUES MEAN BAD FOR YOU).
+          // THEN REPLACE '= 1' WITH '= getHeuristicScore(g)'
+          int score = getHeuristicScore(g);
 
-            return new int[] { score, -1 };
-        }
-
-        // Call self recursively for next player's moves' scores
-        
-        // Is this nextPlayer trying to minimize or maximize the score?  If it's us,
-        // maximize.  If opponent, minimize.
-        boolean isMax = (nextPlayer == myPlayer);
-        int bestMove = -1;
-        int bestScore;
-        if (isMax)
-        {
-            bestScore = Integer.MIN_VALUE;
-        }
-        else
-        {
-            bestScore = Integer.MAX_VALUE;
-        }        
-
-        for (int nextCol = 0; nextCol < g.getCols(); nextCol++)
-        {
-            if (!g.isColumnFull(nextCol))
-            {
-                // Apply the move (temporarily) to the grid...
-                g.makeMove(nextCol);
-                
-                // ... and then call ourselves recursively to move down the decision tree
-                // and come up with a score                
-                int scoreCur = minimaxGetScore(g, remainingDepth - 1, myPlayer)[0];
-                
-                // ... and we must remember to UNDO that move now that the call is done.
-                g.undo();
-                
-                // Update bestScore with what the recursive call returned
-                if (isMax)
-                {
-                    if (scoreCur > bestScore)
-                    {
-                        bestScore = scoreCur;
-                        bestMove = nextCol;
-                    }
-                }
-                else
-                {
-                    // minimizing!
-                    if (scoreCur < bestScore)
-                    {
-                        bestScore = scoreCur;
-                        bestMove = nextCol;
-                    }
-                }
-            }
-        }
-
-        // Return the best score (and the recommended move)
-        return new int[] { bestScore, bestMove };        
-    }
-
+          return new int[] { score, -1 };
+      }
+      boolean isMax = (nextPlayer == myPlayer);
+	  int bestMove = -1;
+	  int bestScore;
+	  if (isMax)
+	  {
+	      bestScore = Integer.MIN_VALUE;
+	      
+	      for (int nextCol = 0; nextCol < g.getCols(); nextCol++)
+		  {
+		      if (!g.isColumnFull(nextCol))
+		      {
+		          // Apply the move (temporarily) to the grid...
+		          g.makeMove(nextCol);
+		          
+		          // ... and then call ourselves recursively to move down the decision tree
+		          // and come up with a score                
+		          int scoreCur = Math.max(bestScore, alphaBeta(g, depth - 1, alpha, beta)[0]);
+		          
+		          // ... and we must remember to UNDO that move now that the call is done.
+		          g.undo();
+		          
+		          // Update bestScore with what the recursive call returned
+		          if (isMax)
+		          {
+		              if (scoreCur > bestScore)
+		              {
+		                  bestScore = scoreCur;
+		                  bestMove = nextCol;
+		              }
+		          }
+		          else
+		          {
+		              // minimizing!
+		              if (scoreCur < bestScore)
+		              {
+		                  bestScore = scoreCur;
+		                  bestMove = nextCol;
+		              }
+		          }
+		          
+		          alpha = Math.max(alpha, bestScore);
+		          
+		          if (beta <= alpha)
+		        	  break;
+		      }
+		   }
+	      return new int[] {bestScore, bestMove};
+	  }
+	  else
+	  {
+	      bestScore = Integer.MAX_VALUE;
+	      
+	      for (int nextCol = 0; nextCol < g.getCols(); nextCol++)
+		  {
+		      if (!g.isColumnFull(nextCol))
+		      {
+		          // Apply the move (temporarily) to the grid...
+		          g.makeMove(nextCol);
+		          
+		          // ... and then call ourselves recursively to move down the decision tree
+		          // and come up with a score                
+		          int scoreCur = Math.min(bestScore, alphaBeta(g, depth - 1, alpha, beta)[0]);
+		          
+		          // ... and we must remember to UNDO that move now that the call is done.
+		          g.undo();
+		          
+		          // Update bestScore with what the recursive call returned
+		          if (isMax)
+		          {
+		              if (scoreCur > bestScore)
+		              {
+		                  bestScore = scoreCur;
+		                  bestMove = nextCol;
+		              }
+		          }
+		          else
+		          {
+		              // minimizing!
+		              if (scoreCur < bestScore)
+		              {
+		                  bestScore = scoreCur;
+		                  bestMove = nextCol;
+		              }
+		          }
+		          
+		          beta = Math.min(beta, bestScore);
+		          
+		          if (beta <= alpha)
+		        	  break;
+		      }
+		   }
+	      return new int[] {bestScore, bestMove};
+	  }        	  
+	}
+	
 	private int getHeuristicScore(Grid g)
 	{
 		int total = 0;
@@ -198,9 +235,8 @@ public class ArnavTyler_NoodileBot implements Player
 			
 			myPlayer = g.getNextPlayer();
 			return g.getCols() / 2;
-			
 		}
-		int[] ret = minimaxGetScore(g, 6, myPlayer);
+		int[] ret = alphaBeta(g, 9, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		return ret[1];
 	}
 	@Override
