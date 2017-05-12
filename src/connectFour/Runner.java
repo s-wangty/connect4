@@ -1,5 +1,6 @@
 package connectFour;
 
+import contestants.ArnavTyler_NoodileBot;
 import graphics.GamePanel;
 import sample.InteractivePlayer;
 
@@ -57,11 +58,11 @@ public class Runner
 
            ---------------------------------------------------------------------------------- */
         
-        playGame(new InteractivePlayer(),new InteractivePlayer());
+        playGame(new bromanda(8, false), new ArnavTyler_NoodileBot());
 
         // This example plays bromanda.AIPlayerAlphaBeta and lets you see the
         // hypothetical game plays it makes during look-ahead
-        //playGame(new bromanda.AIPlayerAlphaBeta(8, true), new bromanda.AIPlayerAlphaBeta(8, true));
+//        playGame(new bromanda.AIPlayerAlphaBeta(8, true), new bromanda.AIPlayerAlphaBeta(8, true));
     }
     
     public static void playGame(Player player1, Player player2)
