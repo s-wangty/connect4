@@ -154,72 +154,67 @@ public class ArnavTyler_NoodileBot implements Player
 				
 				current = g.getPlayerAt(r, c);
 				
+				int pos = 1;
+				
+				if (current != myPlayer)
+					pos = -1;		
+				
 				for(int direction : move) {
 					int[] lands = gu.getLengthAndSpaces(r, c, direction);
-//					for(int i = 0; i < lands.length; i++){
-//						
-//						System.out.println(lands[i]);
-//						
+					double base = 2;
+//					if (lands[0] >= 4) {
+//						total += Integer.MAX_VALUE;
 //					}
-					//System.out.println(current + ", " + myPlayer);
-					if (current == myPlayer) {
-						if (lands[0] >= 4) {
-							total += Integer.MAX_VALUE;
+//					else if (lands[0] == 3) {
+//						if (lands[1] == 2) {
+//							total += Math.pow(base, 5) * pos;
+//						}
+//						else if(lands[1] == 1) {
+//							total += Math.pow(base, 4) * pos;
+//						}							
+//					}
+//					else if (lands[0] == 2) {
+//						if (lands[1] == 2) {
+//							total += Math.pow(base, 3) * pos;
+//						}
+//						else if (lands[1] == 1) {
+//							total += Math.pow(base, 2) * pos;
+//						}
+//					}
+//					else if (lands[0] == 1) {
+//						if (lands[1] == 2) {
+//							total += Math.pow(base, 1) * pos;
+//						}
+//						else if (lands[1] == 1) {
+//							total += Math.pow(base, 0) * pos;
+//						}
+//					}
+					if (lands[0] >= 4) {
+						total += Integer.MAX_VALUE;
+					}
+					else if (lands[0] == 3) {
+						if (lands[1] == 2) {
+							total += 229 * pos;
 						}
-						else if (lands[0] == 3) {
-							if (lands[1] == 2) {
-								total += 32;
-							}
-							else if(lands[1] == 1) {
-								total += 16;
-							}							
+						else if(lands[1] == 1) {
+							total += 211 * pos;
+						}							
+					}
+					else if (lands[0] == 2) {
+						if (lands[1] == 2) {
+							total += 189 * pos;
 						}
-						else if (lands[0] == 2) {
-							if (lands[1] == 2) {
-								total += 8;
-							}
-							else if (lands[1] == 1) {
-								total += 4;
-							}
+						else if (lands[1] == 1) {
+							total += 160 * pos;
 						}
-						else if (lands[0] == 1) {
-							if (lands[1] == 2) {
-								total += 2;
-							}
-							else if (lands[1] == 1) {
-								total += 1;
-							}
+					}
+					else if (lands[0] == 1) {
+						if (lands[1] == 2) {
+							total += 136 * pos;
 						}
-//						System.out.println("pos" + total);
-					} else if (current != 0){
-						if (lands[0] >= 4) {
-							total -= Integer.MAX_VALUE;
+						else if (lands[1] == 1) {
+							total += 50 * pos;
 						}
-						else if (lands[0] == 3) {
-							if (lands[1] == 2) {
-								total -= 32;
-							}
-							else if(lands[1] == 1) {
-								total -= 16;
-							}							
-						}
-						else if (lands[0] == 2) {
-							if (lands[1] == 2) {
-								total -= 8;
-							}
-							else if (lands[1] == 1) {
-								total -= 4;
-							}
-						}
-						else if (lands[0] == 1) {
-							if (lands[1] == 2) {
-								total -= 2;
-							}
-							else if (lands[1] == 1) {
-								total -= 1;
-							}
-						}
-//						System.out.println("neg" + total);
 					}
 				}				
 			}
@@ -236,7 +231,7 @@ public class ArnavTyler_NoodileBot implements Player
 			myPlayer = g.getNextPlayer();
 			return g.getCols() / 2;
 		}
-		int[] ret = alphaBeta(g, 9, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		int[] ret = alphaBeta(g, 8, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		return ret[1];
 	}
 	@Override
