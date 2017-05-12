@@ -200,7 +200,7 @@ public class ArnavTyler_NoodileBot implements Player
 			return g.getCols() / 2;
 			
 		}
-		int[] ret = minimaxGetScore(g, 5, myPlayer);
+		int[] ret = minimaxGetScore(g, 6, myPlayer);
 		return ret[1];
 	}
 	@Override

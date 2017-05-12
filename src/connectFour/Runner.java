@@ -58,7 +58,7 @@ public class Runner
 
            ---------------------------------------------------------------------------------- */
         
-        playGame(new bromanda(8, false), new ArnavTyler_NoodileBot());
+        playGame(new ArnavTyler_NoodileBot(), new ArnavTyler_NoodileBot());
 
         // This example plays bromanda.AIPlayerAlphaBeta and lets you see the
         // hypothetical game plays it makes during look-ahead
