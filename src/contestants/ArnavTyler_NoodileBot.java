@@ -19,12 +19,12 @@ public class ArnavTyler_NoodileBot implements Player
       if (g.getWinningPlayer() == myPlayer)
       {
           // We won!
-          return new int[] { 1000 * (depth + 1), -1 };
+          return new int[] { 1000000 * (depth + 1), -1 };
       }
       else if (g.getWinningPlayer() == (3 - myPlayer))
       {
           // They won.
-          return new int[] { -1000 * (depth + 1), -1 };
+          return new int[] { -1000000 * (depth + 1), -1 };
       }
       else if (g.getWinningPlayer() == -1)
       {
@@ -155,12 +155,18 @@ public class ArnavTyler_NoodileBot implements Player
 				
 				int pos = 1;
 				
-				if (current != myPlayer)
-					pos = -1;		
-				
+				if (current != myPlayer){
+					if (current == 0) {
+						pos = 0;
+					}
+					else {
+						pos = -1;
+					}
+				}
+				System.out.println(pos);
 				for(int direction : move) {
 					int[] lands = gu.getLengthAndSpaces(r, c, direction);
-					double base = 2;
+					//double base = 2;
 //					if (lands[0] >= 4) {
 //						total += Integer.MAX_VALUE;
 //					}
@@ -189,7 +195,7 @@ public class ArnavTyler_NoodileBot implements Player
 //						}
 //					}
 					if (lands[0] >= 4) {
-						total += Integer.MAX_VALUE * pos;
+						total += 1000000 * pos;
 					}
 					else if (lands[0] == 3) {
 						if (lands[1] == 2) {
@@ -219,7 +225,7 @@ public class ArnavTyler_NoodileBot implements Player
 			}
 			
 		}
-		System.out.println(total);
+		//System.out.println(total);
 		return total;
 	}
 	@Override
@@ -228,9 +234,9 @@ public class ArnavTyler_NoodileBot implements Player
 		if(myPlayer == -1){
 			
 			myPlayer = g.getNextPlayer();
-			//return g.getCols() / 2;
+			return g.getCols() / 2;
 		}
-		int[] ret = alphaBeta(g, 9, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		int[] ret = alphaBeta(g, 8, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		return ret[1];
 	}
 	@Override
